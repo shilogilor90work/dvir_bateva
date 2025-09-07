@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Update Customer</title>
+</head>
+<body>
+<h2>Update Customer: {{ customer.full_name }}</h2>
+
+<form method="post">
+    {% csrf_token %}
+    <label>Full Name:</label><br>
+    <input type="text" name="full_name" value="{{ customer.full_name }}"><br><br>
+
+    <label>Email:</label><br>
+    <input type="email" name="email" value="{{ customer.email }}"><br><br>
+
+    <label>Phone:</label><br>
+    <input type="text" name="phone" value="{{ customer.phone }}"><br><br>
+
+    <label>Address:</label><br>
+    <input type="text" name="address" value="{{ customer.address }}"><br><br>
+
+    <label>Default Delivery:</label><br>
+    <select name="default_delivery">
+        <option value="pickup" {% if customer.default_delivery == "pickup" %}selected{% endif %}>Pickup</option>
+        <option value="standard" {% if customer.default_delivery == "standard" %}selected{% endif %}>Standard</option>
+        <option value="express" {% if customer.default_delivery == "express" %}selected{% endif %}>Express</option>
+        <option value="courier" {% if customer.default_delivery == "courier" %}selected{% endif %}>Courier</option>
+    </select><br><br>
+
+    <label>In Neighborhood:</label>
+    <input type="checkbox" name="in_neighborhood" {% if customer.in_neighborhood %}checked{% endif %}><br><br>
+
+    <label>Metadata (JSON):</label><br>
+    <input type="text" name="metadata" value="{{ customer.metadata }}"><br><br>
+
+    <button type="submit">Update Customer</button>
+</form>
+
+<a href="{% url 'customer_list' %}">Back to list</a>
+</body>
+</html>

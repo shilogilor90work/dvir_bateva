@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Customers</title>
+</head>
+<body>
+<h2>All Customers</h2>
+
+<table border="1" cellpadding="5">
+    <tr>
+        <th>ID</th>
+        <th>Full Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Address</th>
+        <th>In Neighborhood</th>
+        <th>Actions</th>
+    </tr>
+    {% for customer in customers %}
+    <tr>
+        <td>{{ customer.id }}</td>
+        <td>{{ customer.full_name }}</td>
+        <td>{{ customer.email }}</td>
+        <td>{{ customer.phone }}</td>
+        <td>{{ customer.address }}</td>
+        <td>{{ customer.in_neighborhood }}</td>
+        <td>
+            <a href="{% url 'customer_update' customer.id %}">Edit</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+</body>
+</html>

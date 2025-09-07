@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload Customers CSV</title>
+</head>
+<body>
+    <h2>Upload Customers CSV</h2>
+
+    <form id="csvForm" enctype="multipart/form-data">
+        <input type="file" id="fileInput" name="file" accept=".csv" required>
+        <button type="submit">Upload CSV</button>
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+        const form = document.getElementById('csvForm');
+        const resultDiv = document.getElementById('result');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const fileInput = document.getElementById('fileInput');
+            if (fileInput.files.length === 0) {
+                alert("Please select a CSV file");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("file", fileInput.files[0]);
+
+            try {
+                const response = await fetch("/api/customers/bulk_upload_csv/", {
+                    method: "POST",
+                    body: formData
+                });
+
+                const data = await response.json();
+                resultDiv.innerText = JSON.stringify(data, null, 2);
+
+            } catch (error) {
+                console.error(error);
+                resultDiv.innerText = "Error uploading CSV";
+            }
+        });
+    </script>
+</body>
+</html>

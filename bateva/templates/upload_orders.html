@@ -1,0 +1,46 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload Orders XLSX</title>
+</head>
+<body>
+<h2>Upload Orders XLSX</h2>
+
+<form id="xlsxForm" enctype="multipart/form-data">
+    <input type="file" id="fileInput" name="file" accept=".xlsx" required>
+    <button type="submit">Upload XLSX</button>
+</form>
+
+<div id="result"></div>
+
+<script>
+const form = document.getElementById('xlsxForm');
+const resultDiv = document.getElementById('result');
+
+form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const fileInput = document.getElementById('fileInput');
+    if (fileInput.files.length === 0) {
+        alert("Please select a XLSX file");
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", fileInput.files[0]);
+
+    try {
+        const response = await fetch("/api/orders/upload_xlsx/", {
+            method: "POST",
+            body: formData
+        });
+        const data = await response.json();
+        resultDiv.innerText = JSON.stringify(data, null, 2);
+    } catch (error) {
+        console.error(error);
+        resultDiv.innerText = "Error uploading XLSX";
+    }
+});
+</script>
+</body>
+</html>
